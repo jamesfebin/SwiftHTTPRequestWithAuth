@@ -34,7 +34,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationDidBecomeActive(application: UIApplication) {
-        // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+        // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface. 
+        let url = NSURL(string: "http://quiet-plateau-6449.herokuapp.com/data/Animals%20&%20Pets")
+
+        let config = NSURLSessionConfiguration.defaultSessionConfiguration()
+        
+        let authString = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoicGV0ZXJrYWlzZXJ0YWxlbnRAZ21haWwuY29tIn0.05cbRebyfjhEutR329jrSimWhgvVU7qX_w_vx-17W5s"
+        config.HTTPAdditionalHeaders = ["access_token" : authString]
+
+        let session = NSURLSession(configuration: config)
+        
+        session.dataTaskWithURL(url!) {
+            (let data, let response, let error) in
+            if let httpResponse = response as? NSHTTPURLResponse {
+                let dataString = NSString(data: data, encoding: NSUTF8StringEncoding)
+                println(dataString)
+            }
+            }.resume()
+        
+        
     }
 
     func applicationWillTerminate(application: UIApplication) {
